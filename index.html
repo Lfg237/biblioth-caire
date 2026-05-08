@@ -2,290 +2,617 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Programme des Matchs A6</title>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <style>
-body {
-    margin: 0;
-    padding: 10px;
-    font-family: Arial, sans-serif;
-    background: #e1ecff;
+
+*{
+    box-sizing:border-box;
 }
-.page {
-    width: 420px; /* A6 width */
-    height: 595px; /* A6 height */
-    margin: 20px auto;
-    position: relative;
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    overflow: hidden;
+
+body{
+    margin:0;
+    padding:15px;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#dbeafe,#eff6ff);
 }
-#backgroundPhoto {
-    position: absolute;
-    top:0;
-    left:0;
+
+/* PAGE */
+
+.page{
+    width:420px;
+    min-height:595px;
+    margin:auto;
+    position:relative;
+    overflow:hidden;
+    border-radius:20px;
+    background:white;
+    box-shadow:0 15px 40px rgba(0,0,0,0.2);
+}
+
+/* IMAGE FOND */
+
+#backgroundPhoto{
+    position:absolute;
+    inset:0;
     width:100%;
     height:100%;
-    object-fit: cover;
+    object-fit:cover;
+    opacity:0.22;
     z-index:0;
 }
 
-.header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    position: relative;
-    z-index: 2;
+/* OVERLAY */
+
+.overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.92),
+        rgba(255,255,255,0.96)
+    );
+    z-index:1;
+    pointer-events:none;
 }
 
-.header .title {
-    flex: 1;
+/* CONTENU */
+
+.content{
+    position:relative;
+    z-index:5;
+    padding:18px;
 }
 
-.header h1, .header h2 {
-    margin: 0;
-}
-.header h1 { font-size: 18px; }
-.header h2 { font-size: 12px; color:#555; }
+/* HEADER */
 
-#logoBox {
-    width: 60px;
-    height: 60px;
-    border: 2px dashed #999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    border-radius: 5px;
-    background: white;
+.header{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:15px;
 }
 
-button {
-    padding: 5px 8px;
-    margin: 5px 5px 10px 0;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    z-index: 2;
-    position: relative;
-    background-color: rgba(255,255,255,0.9);
-    font-weight: bold;
-    font-size: 12px;
+.title{
+    flex:1;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    z-index: 2;
-    position: relative;
-    background-color: rgba(255,255,255,0.85);
-    font-size: 12px;
-    max-height: 400px; /* hauteur pour scroll */
-    display: block;
-    overflow-y: auto;
+.title h1{
+    margin:0;
+    font-size:20px;
+    color:#0f172a;
+    font-weight:800;
 }
 
-th, td {
-    border: 1px solid #ddd;
-    padding: 5px;
-    text-align: center;
-    height: 25px;
+.title h2{
+    margin:4px 0 0;
+    font-size:12px;
+    color:#475569;
 }
 
-th { 
-    background: #10b981; 
-    color:white; 
-    font-size: 12px;
-}
-#paymentPopup {
-    display:none;
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background: rgba(0,0,0,0.5);
+/* LOGO */
+
+#logoBox{
+    width:65px;
+    height:65px;
+    border-radius:16px;
+    border:2px dashed #94a3b8;
+    background:white;
+    display:flex;
     justify-content:center;
     align-items:center;
-    z-index: 5;
+    overflow:hidden;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:bold;
+    color:#64748b;
 }
 
-#paymentPopup .popup-content {
+/* ACTIONS */
+
+.actions{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+    flex-wrap:wrap;
+}
+
+/* BUTTONS */
+
+button{
+    flex:1;
+    border:none;
+    padding:10px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:13px;
+    transition:0.3s;
+}
+
+#addMatchBtn{
+    background:#10b981;
+    color:white;
+}
+
+#changeBgBtn{
+    background:#7c3aed;
+    color:white;
+}
+
+#downloadBtn{
+    background:#2563eb;
+    color:white;
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+/* TABLE */
+
+.table-container{
+    max-height:360px;
+    overflow:auto;
+    border-radius:14px;
     background:white;
-    padding:15px;
-    border-radius:10px;
-    width:250px;
+    border:1px solid #dbeafe;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+}
+
+th{
+    background:linear-gradient(135deg,#10b981,#059669);
+    color:white;
+    padding:10px 5px;
+    position:sticky;
+    top:0;
+    z-index:5;
+}
+
+td{
+    border:1px solid #e2e8f0;
+    padding:8px 5px;
+    text-align:center;
+    min-width:80px;
+}
+
+tr[contenteditable="true"]:hover{
+    background:#f8fafc;
+}
+
+/* SIGNATURE */
+
+.signature{
+    margin-top:15px;
+    text-align:center;
+    font-size:11px;
+    color:#64748b;
+    border-top:1px solid #e2e8f0;
+    padding-top:10px;
+}
+
+/* POPUP */
+
+#downloadPopup{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.popupBox{
+    width:300px;
+    background:white;
+    border-radius:20px;
+    padding:20px;
     text-align:center;
 }
 
-#paymentPopup textarea, #paymentPopup input { width:100%; margin-bottom:10px; }
-
-.signature {
-    margin-top: 15px;
-    font-size: 10px;
-    text-align: center;
-    color: #555;
-    position: relative;
-    z-index: 2;
+.popupBox input{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #cbd5e1;
+    margin-top:10px;
 }
+
+.popupButtons{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+#confirmDownload{
+    background:#10b981;
+    color:white;
+}
+
+#closePopup{
+    background:#ef4444;
+    color:white;
+}
+
+#popupError{
+    color:red;
+    font-size:12px;
+}
+
 </style>
 </head>
+
 <body>
 
 <div class="page" id="pageContent">
-    <img id="backgroundPhoto" src="" alt="Photo de fond">
 
-    <div class="header">
-        <div class="title">
-            <h1 contenteditable="true">Nom de l'entreprise</h1>
-            <h2 contenteditable="true">Programme des Matchs 2025</h2>
+    <!-- IMAGE FOND -->
+
+    <img 
+        id="backgroundPhoto"
+        src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?q=80&w=1200&auto=format&fit=crop"
+    >
+
+    <div class="overlay"></div>
+
+    <div class="content">
+
+        <!-- HEADER -->
+
+        <div class="header">
+
+            <div class="title">
+
+                <h1 contenteditable="true">
+                    Nom de l'entreprise
+                </h1>
+
+                <h2 contenteditable="true">
+                    Programme des Matchs 2025
+                </h2>
+
+            </div>
+
+            <!-- LOGO -->
+
+            <div id="logoBox">
+
+                Logo
+
+            </div>
+
+            <input 
+                type="file"
+                id="logoInput"
+                accept="image/*"
+                hidden
+            >
+
         </div>
-        <div id="logoBox">Logo
-            <input type="file" id="logoInput" accept="image/*" style="display:none;">
+
+        <!-- ACTIONS -->
+
+        <div class="actions">
+
+            <button id="addMatchBtn">
+                ➕ Ajouter Match
+            </button>
+
+            <button id="changeBgBtn">
+                🖼 Changer Fond
+            </button>
+
+            <button id="downloadBtn">
+                ⬇ Télécharger PDF
+            </button>
+
         </div>
+
+        <!-- INPUT FOND -->
+
+        <input 
+            type="file"
+            id="bgInput"
+            accept="image/*"
+            hidden
+        >
+
+        <!-- TABLE -->
+
+        <div class="table-container">
+
+            <table id="matchesTable">
+
+                <tr>
+                    <th>Equipe A</th>
+                    <th>Equipe B</th>
+                    <th>Date</th>
+                    <th>Heure</th>
+                    <th>Lieu</th>
+                    <th>Organisateur</th>
+                </tr>
+
+                <tr contenteditable="true">
+
+                    <td>Team 1</td>
+                    <td>Team 2</td>
+                    <td>12/04/2025</td>
+                    <td>16:00</td>
+                    <td>Stade Central</td>
+                    <td>Ligue Locale</td>
+
+                </tr>
+
+            </table>
+
+        </div>
+
+        <div class="signature">
+            Créé par LesFacilitateurs • WhatsApp : +237651475255
+        </div>
+
     </div>
 
-    <button id="addMatchBtn">Ajouter Match</button>
-    <button id="downloadBtn">Télécharger PDF</button>
-
-    <table id="matchesTable">
-        <tr>
-            <th>Equipe A</th>
-            <th>Equipe B</th>
-            <th>Date</th>
-            <th>Heure</th>
-            <th>Lieu</th>
-            <th>Organisateur</th>
-        </tr>
-        <tr contenteditable="true">
-            <td>Team 1</td>
-            <td>Team 2</td>
-            <td>12/04/2025</td>
-            <td>16:00</td>
-            <td>Stade Central</td>
-            <td>Ligue Locale</td>
-        </tr>
-    </table>
-
-    <div class="signature">
-        Créé par LesFacilitateurs WhatsApp : +237651475255
-    </div>
 </div>
 
-<!-- Popup paiement -->
-<div id="paymentPopup">
-    <div class="popup-content">
-        <h3>Paiement HelepMoney</h3>
-        <p>Effectuez votre paiement de 100 FCFA à :</p>
-        <ul style="text-align:left;">
-            <li>Kono Emini Michel - MoMo : 651475255</li>
-            <li>Kono Emini Michel - OM : 656050097</li>
-        </ul>
-        <p>Ou utilisez le code admin :</p>
-        <input type="text" id="adminCode" placeholder="Code admin">
-        <textarea id="transactionMsg" placeholder="Collez le message Momo ici"></textarea>
-        <button id="validateBtn">Valider</button>
-        <button id="cancelPopup">Annuler</button>
-        <p id="paymentError" style="color:red; font-size:12px;"></p>
+<!-- POPUP -->
+
+<div id="downloadPopup">
+
+    <div class="popupBox">
+
+        <h2>🔐 Confirmation</h2>
+
+        <p>
+            Entrez le code 233
+        </p>
+
+        <input 
+            type="password"
+            id="downloadCode"
+            placeholder="Code 233"
+        >
+
+        <p id="popupError"></p>
+
+        <div class="popupButtons">
+
+            <button id="confirmDownload">
+                ✅ Confirmer
+            </button>
+
+            <button id="closePopup">
+                ⬅ Retour
+            </button>
+
+        </div>
+
     </div>
+
 </div>
 
 <script>
-// Logo carré
-const logoBox = document.getElementById('logoBox');
-const logoInput = document.getElementById('logoInput');
-logoBox.addEventListener('click', ()=> logoInput.click());
-logoInput.addEventListener('change', e=>{
+
+/* LOGO */
+
+const logoBox =
+document.getElementById('logoBox');
+
+const logoInput =
+document.getElementById('logoInput');
+
+logoBox.onclick = function(){
+
+    logoInput.click();
+
+};
+
+logoInput.onchange = function(e){
+
     const file = e.target.files[0];
-    if(file){
-        const reader = new FileReader();
-        reader.onload = e=>{
-            logoBox.innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover;">`;
-        }
-        reader.readAsDataURL(file);
+
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(ev){
+
+        logoBox.innerHTML = `
+            <img
+                src="${ev.target.result}"
+                style="
+                    width:100%;
+                    height:100%;
+                    object-fit:cover;
+                "
+            >
+        `;
+
     }
-});
 
-// Photo de fond
-const backgroundPhoto = document.getElementById('backgroundPhoto');
-backgroundPhoto.addEventListener('click', ()=>{
-    const file = document.createElement('input');
-    file.type='file'; file.accept='image/*';
-    file.onchange = e=>{
-        const reader = new FileReader();
-        reader.onload = ev=>{ backgroundPhoto.src = ev.target.result; }
-        reader.readAsDataURL(e.target.files[0]);
-    };
-    file.click();
-});
+    reader.readAsDataURL(file);
 
-// Ajouter match
-const addMatchBtn = document.getElementById('addMatchBtn');
-addMatchBtn.addEventListener('click', ()=>{
-    const table = document.getElementById('matchesTable');
-    const row = table.insertRow();
-    row.contentEditable = "true";
-    for(let i=0;i<6;i++) row.insertCell();
-});
+};
 
-// Paiement PDF
-const downloadBtn = document.getElementById('downloadBtn');
-const popup = document.getElementById('paymentPopup');
-const cancelPopup = document.getElementById('cancelPopup');
-const validateBtn = document.getElementById('validateBtn');
-const adminCode = document.getElementById('adminCode');
-const transactionMsg = document.getElementById('transactionMsg');
-const paymentError = document.getElementById('paymentError');
+/* FOND */
 
-const validUsers = [
-    {name:"Kono Emini Michel", momo:"651475255"},
-    {name:"Kono Emini Michel", momo:"656050097"}
-];
-const VIP_CODE = "233233";
-let usedIds = [];
+const bgInput =
+document.getElementById('bgInput');
 
-downloadBtn.addEventListener('click', ()=> popup.style.display='flex');
-cancelPopup.addEventListener('click', ()=>{
-    popup.style.display='none';
-    paymentError.textContent=''; adminCode.value=''; transactionMsg.value='';
-});
+const changeBgBtn =
+document.getElementById('changeBgBtn');
 
-validateBtn.addEventListener('click', ()=>{
-    const code = adminCode.value.trim();
-    const msg = transactionMsg.value.trim();
-    paymentError.textContent='';
+const backgroundPhoto =
+document.getElementById('backgroundPhoto');
 
-    if(code===VIP_CODE){ popup.style.display='none'; downloadPDF(); return; }
+changeBgBtn.onclick = function(){
 
-    const regex = /a\s(.+)\s\((\d+)\)\sId:(\d+)\sle\s([\d-]+\s[\d:]+)/i;
-    const match = msg.match(regex);
-    if(!match){ paymentError.textContent="Format invalide"; return; }
-    const [_, name, momo, txnId, dateStr] = match;
-    const txnDate = new Date(dateStr);
-    const now = new Date();
-    if(now - txnDate > 10*60*1000){ paymentError.textContent="Transaction trop ancienne"; return; }
-    if(!validUsers.find(u=>u.name===name && u.momo===momo)){ paymentError.textContent="Nom ou numéro invalide"; return; }
-    if(usedIds.includes(txnId)){ paymentError.textContent="Transaction déjà utilisée"; return; }
-    usedIds.push(txnId);
-    popup.style.display='none';
+    bgInput.click();
+
+};
+
+bgInput.onchange = function(e){
+
+    const file = e.target.files[0];
+
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(ev){
+
+        backgroundPhoto.src =
+        ev.target.result;
+
+        localStorage.setItem(
+            'customBackground',
+            ev.target.result
+        );
+
+    }
+
+    reader.readAsDataURL(file);
+
+};
+
+/* RESTORE BG */
+
+window.onload = function(){
+
+    const savedBg =
+    localStorage.getItem('customBackground');
+
+    if(savedBg){
+
+        backgroundPhoto.src = savedBg;
+
+    }
+
+};
+
+/* AJOUT MATCH */
+
+document.getElementById('addMatchBtn')
+.onclick = function(){
+
+    const table =
+    document.getElementById('matchesTable');
+
+    const row =
+    table.insertRow();
+
+    row.contentEditable = 'true';
+
+    for(let i=0;i<6;i++){
+
+        const cell =
+        row.insertCell();
+
+        cell.innerHTML = '...';
+
+    }
+
+};
+
+/* POPUP */
+
+const popup =
+document.getElementById('downloadPopup');
+
+const popupError =
+document.getElementById('popupError');
+
+document.getElementById('downloadBtn')
+.onclick = function(){
+
+    popup.style.display = 'flex';
+
+    popupError.textContent = '';
+
+    document.getElementById('downloadCode').value = '';
+
+};
+
+document.getElementById('closePopup')
+.onclick = function(){
+
+    popup.style.display = 'none';
+
+};
+
+/* CONFIRMATION */
+
+document.getElementById('confirmDownload')
+.onclick = function(){
+
+    const code =
+    document.getElementById('downloadCode')
+    .value
+    .trim();
+
+    if(code !== '233'){
+
+        popupError.textContent =
+        '❌ Code invalide';
+
+        return;
+
+    }
+
+    popup.style.display = 'none';
+
     downloadPDF();
-});
+
+};
+
+/* PDF */
 
 function downloadPDF(){
-    const element = document.getElementById('pageContent');
 
-    // Découpe automatique en pages si le tableau est trop long
+    const element =
+    document.getElementById('pageContent');
+
     const opt = {
-        margin: 0.5,
-        filename: 'Programme_Matchs_A6.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a6', orientation: 'portrait' },
-        pagebreak: { mode: ['css', 'legacy'] }
+
+        margin:0.2,
+
+        filename:'Programme_Matchs_A6_233.pdf',
+
+        image:{
+            type:'jpeg',
+            quality:1
+        },
+
+        html2canvas:{
+            scale:3,
+            useCORS:true
+        },
+
+        jsPDF:{
+            unit:'mm',
+            format:'a6',
+            orientation:'portrait'
+        }
+
     };
 
-    html2pdf().set(opt).from(element).save();
+    html2pdf()
+    .set(opt)
+    .from(element)
+    .save();
+
 }
+
 </script>
+
 </body>
 </html>
